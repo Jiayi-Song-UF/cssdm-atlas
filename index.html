@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore five-model mean CSSDM predictions for 3,123 species across Florida at approximately 504 m resolution.">
+  <title>CSSDM · Florida Species Atlas</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="vendor/ol.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="vendor/proj4.js"></script>
+  <script defer src="vendor/ol.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="brand-mark">C</span><div><strong>CSSDM</strong><span class="subtitle">FLORIDA SPECIES ATLAS</span></div></div>
+    <div class="header-note">Five-model mean <span>·</span> 504 m grid <span>·</span> 2023 imagery</div>
+    <button id="share" disabled>Copy map link</button>
+  </header>
+  <main>
+    <aside aria-label="Map controls">
+      <div class="eyebrow">EXPLORE THE PREDICTIONS</div>
+      <h1>One species.<br>All of Florida.</h1>
+      <p class="intro">Explore spatial patterns, then zoom in to inspect individual grid cells.</p>
+      <label for="search">Find a species</label>
+      <input id="search" type="search" placeholder="Scientific name or species key…" disabled autocomplete="off">
+      <label class="sr-only" for="kingdom">Filter by kingdom</label>
+      <select id="kingdom" disabled><option value="">All kingdoms</option></select>
+      <div id="species-count" class="small">Loading species catalog…</div>
+      <label class="sr-only" for="species">Select species</label>
+      <select id="species" size="6" disabled aria-label="Select species"></select>
+      <div class="section">
+        <label for="county">Go to</label>
+        <select id="county" disabled><option value="">Entire Florida</option></select>
+        <label for="scale">Color scale</label>
+        <select id="scale" disabled><option value="absolute">Fixed: 0–1 (comparable scale)</option><option value="relative">Enhanced: species 2nd–98th percentiles</option></select>
+        <p id="scale-note" class="small">The same color scale applies across every county.</p>
+        <div class="range-label"><label for="opacity">Prediction opacity</label><output id="opacity-value">85%</output></div>
+        <input id="opacity" type="range" min="0" max="100" value="85" disabled>
+        <div class="checks"><label><input id="boundaries" type="checkbox" checked disabled> County boundaries</label><label><input id="basemap" type="checkbox" checked disabled> Street basemap</label></div>
+      </div>
+      <details>
+        <summary>What am I looking at?</summary>
+        <p>The arithmetic mean of five calibrated CSSDM predictions, using Planet imagery, WorldClim and AlphaEarth features. These are model prediction scores, <strong>not validated occupancy probabilities</strong>.</p>
+        <p>All 3,123 model species are included. 66 counties have predictions; Monroe has no source imagery and is shown as unavailable. Prediction cells are on the original approximately 504 m projected grid.</p>
+        <p>Web values are quantized for fast loading. The maximum rounding error is shown for each species. Float32 scientific outputs are unchanged and retained separately. No spatial downsampling is applied to stored web values.</p>
+        <p>Enhanced colors use statewide percentiles, not county-specific normalization. Color clipping does not change the value shown when you click a cell. Zoomed-out pixels may represent multiple grid cells; click to inspect the original grid value.</p>
+        <p>This atlas supports qualitative ecological review; it is not an independent model-performance evaluation. 2023 imagery does not make this a validated 2023 occupancy map.</p>
+        <p>No login or analytics. The optional OpenStreetMap basemap requests tiles from its provider.</p>
+        <a href="DATA_FORMAT.md" target="_blank" rel="noopener">Data format and scientific notes</a>
+      </details>
+      <div class="footer-note">Research visualization · CSSDM / 0920</div>
+    </aside>
+    <section class="map-panel" aria-label="Florida prediction map">
+      <div id="map" tabindex="0" aria-label="Interactive map. Use plus and minus to zoom, and arrow keys to pan."></div>
+      <div class="map-title"><div class="eyebrow" id="selected-kingdom">FLORIDA</div><h2 id="selected-name">Loading atlas…</h2><div id="selected-detail" class="small">All species · five-model ensemble mean</div></div>
+      <div id="status" role="status" aria-live="polite">Loading map data…</div>
+      <div class="map-buttons"><button id="home" disabled>↗ Entire Florida</button></div>
+      <div id="inspection" class="inspection" aria-live="polite"><strong>Inspect a location</strong><p>Click the map to read a grid-cell prediction.</p></div>
+      <div class="legend"><div class="legend-heading">Model prediction score</div><div id="color-bar"></div><div class="legend-ticks"><span id="legend-min">0</span><span id="legend-mid">0.5</span><span id="legend-max">1</span></div><div id="precision" class="small">Web display values are approximate.</div><div class="small"><span class="missing-swatch"></span> Monroe: no prediction data</div></div>
+      <noscript>This atlas requires JavaScript. Enable JavaScript to select species and explore predictions.</noscript>
+    </section>
+  </main>
+</body>
+</html>
